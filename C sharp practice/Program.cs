@@ -4,138 +4,116 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Tools;
 
 namespace C_sharp_practice
 {
     class MainClass
     {
-        static void Main(string []args)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Please Enter two numbers");
-            int a = Convert.ToInt32(Console.ReadLine());
-            int b = Convert.ToInt32(Console.ReadLine());
-            int restriction;
-            Console.WriteLine("Now Processing");
+            bool life = true;
+            int numOne, numTwo;
+            int desiredAction;
 
-
-
-            List<float> results = new List<float>();
-            List<float> resultsTwo = new List<float>();
-            for(int i = a; i >= 1; i--)
+            while (life)
             {
-                float temp = a % i;
+                Console.WriteLine("Please provide two numbers you want to calculate.");
+                numOne = Convert.ToInt32(Console.ReadLine());
+                numTwo = Convert.ToInt32(Console.ReadLine());
 
-                if (temp == 0)
-                    results.Add(i);
-            }
-
-            for (int i = b; i >= 1; i--)
-            {
-                float temp = b % i;
-
-                if (temp == 0)
-                    resultsTwo.Add(i);
-            }
-
-            foreach (float num in results)
-            {
-                Console.WriteLine(num);
-            }
-
-            Console.WriteLine("And");
-
-            foreach (float num in resultsTwo)
-            {
-                Console.WriteLine(num);
-            }
+                Console.WriteLine("What do you want to do with these numbers?");
+                Console.WriteLine("1. Add | 2. Subtract | 3. Time | 4. Divide | 5. Factors | 6. Multiples");
+                desiredAction = Convert.ToInt32(Console.ReadLine());
 
 
-
-
-            List<int> commonFactors = new List<int>();
-           for(int i = 0; i < results.Count; i ++)
-            {
-                for( int s = 0; s< resultsTwo.Count; s++)
+                switch (desiredAction)
                 {
-                    if(results.ElementAt(i) == resultsTwo.ElementAt(s))
+                    case 1:
+                        Console.WriteLine("Your result is {0}", CalculateNum.Add(numOne, numTwo));
+                        break;
+                    case 2:
+                        Console.WriteLine("Your result is {0}", CalculateNum.Sub(numOne, numTwo));
+                        break;
+                    case 3:
+                        Console.WriteLine("Your result is {0}", CalculateNum.Time(numOne, numTwo));
+                        break;
+                    case 4:
+                        Console.WriteLine("Your result is {0}", CalculateNum.Divide(numOne, numTwo));
+                        break;
+                    case 5:
+                        if (CalculateNum.Factors(numOne, numTwo) != null)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    Console.WriteLine("Factors of {0} are ", numOne);
+                                }
+                                else if (i == 1)
+                                {
+                                    Console.WriteLine("Factors of {0} are ", numTwo);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Common factors of two numbers are");
+                                }
+
+                                foreach (int numbers in CalculateNum.Factors(numOne, numTwo)[i])
+                                {
+                                    Console.WriteLine(numbers);
+
+                                }
+                            }
+                        }
+                        break;
+
+                    case 6:
+                        Console.WriteLine("Please provide range for the common multiple calculation");
+                        int range = Convert.ToInt32(Console.ReadLine());
+                        if (CalculateNum.Multiple(numOne, numTwo, range) != null)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    Console.WriteLine("Multiples of {0} are ", numOne);
+                                }
+                                else if (i == 1)
+                                {
+                                    Console.WriteLine("Multiples of {0} are ", numTwo);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Common multiples of two numbers are");
+                                }
+
+                                foreach (int numbers in CalculateNum.Multiple(numOne, numTwo, range)[i])
+                                {
+                                    Console.WriteLine(numbers);
+                                }
+                            }
+
+                        }
+                        break;
+                }
+
+                Console.WriteLine("Do you wish to exit the program?");
+                Console.WriteLine("1. Yes | 2. No");
+
+                if (Convert.ToInt32(Console.ReadLine()) == 1)
+                    life = false;
+                else
+                {
+                   for(int i = 0; i  < 6; i++)
                     {
-                        commonFactors.Add((int)results.ElementAt(i));
+                        Console.WriteLine(".");
                     }
                 }
             }
 
-            Console.WriteLine("We've found some common factors! and they are : ");
-           foreach (int num in commonFactors)
-            {
-                Console.WriteLine(num);
-            }
-
-            if (commonFactors.ElementAt(0) != 1)
-                Console.WriteLine("The greatest common factor is : {0}", commonFactors.ElementAt(0));
-            else
-                Console.WriteLine("We did not find any GCF that is not 1");
-
-            Console.WriteLine("Please restrict the range for Lowest Common Multiple");
-            restriction = Convert.ToInt32(Console.ReadLine());
-            List<int> lcm = new List<int>();
-            List<int> lcmT = new List<int>();
-
-            int tempCount = 1;
-            while(true)
-            {
-                
-                int tempNum;
-                tempNum  = tempCount *a;
-                tempCount++;
-
-                if (tempNum >= restriction)
-                {
-                    tempCount = 1;
-                    break;
-                }
-                else
-                    lcm.Add(tempNum);
-            }
-
-            while (true)
-            {
-
-                int tempNum;
-                tempNum = tempCount * b;
-                tempCount++;
-
-                if (tempNum >= restriction)               
-                    break;               
-                else
-                    lcmT.Add(tempNum);
-            }
-
-            List<int> commonMultiple = new List<int>();
-            for (int t = 0; t < lcm.Count; t++)
-            {
-                for (int d = 0; d < lcmT.Count; d++)
-                {
-                    if (lcm.ElementAt(t) == lcmT.ElementAt(d))
-                    {
-                        commonMultiple.Add(lcm.ElementAt(t));
-                    }
-                }
-            }
-
-
-            Console.WriteLine("Common multiples within the restriction of {0} are : ", restriction);
-
-            foreach (int num in commonMultiple)
-            {
-                Console.WriteLine(num);
-            }
-
-
-
-            Console.WriteLine("To exit, please press any key.");
-
+                    Console.WriteLine("Please press any key to exit");
             Console.ReadKey();
         }
     }
-
 }
